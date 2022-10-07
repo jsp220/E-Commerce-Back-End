@@ -67,12 +67,12 @@ router.post('/', (req, res) => {
             tag_id,
           };
         });
-        return ProductTag.bulkCreate(productTagIdArr);
+        return [product, ProductTag.bulkCreate(productTagIdArr)];
       }
       // if no product tags, just respond
-      res.status(200).json(product);
+      res.status(200).json({message: `${product[0].product_name} successfully created.`});
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((product, productTagIds) => res.status(200).json({message: `${product[0].product_name} successfully created.`}))
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
@@ -114,7 +114,7 @@ router.put('/:id', (req, res) => {
         ProductTag.bulkCreate(newProductTags),
       ]);
     })
-    .then((updatedProductTags) => res.json(updatedProductTags))
+    .then((updatedProductTags) => res.json({message: "Product successfully updated."}))
     .catch((err) => {
       // console.log(err);
       res.status(400).json(err);
